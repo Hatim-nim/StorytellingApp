@@ -1,5 +1,4 @@
 import customtkinter as ctk
-import os
 from PIL import Image, ImageTk
 
 ctk.set_appearance_mode("dark")  # Set the UI mode
@@ -12,53 +11,107 @@ class App(ctk.CTk):
         self.geometry("800x600")
 
         # Configure the grid to distribute space equally
-        # Ensure both columns have equal weight
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
-        
-        # Ensure both rows have equal weight
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
 
-        # Icons for the buttons
-        icons = [
-            "assetes/images/text.png",
-            "assetes/images/pic.png",
-            "assetes/images/sound.png",
-            "assetes/images/movie.png"
-        ]
-        
-        button_texts = ["Text", "Image", "Sound", "Video"]
-        actions = [self.on_text, self.on_image, self.on_sound, self.on_video]
+        # Main frame setup
+        self.main_frame = ctk.CTkFrame(self)
+        self.main_frame.grid(row=0, column=0, sticky="nsew", columnspan=2, rowspan=2)
+        self.main_frame.grid_columnconfigure(0, weight=1)
+        self.main_frame.grid_columnconfigure(1, weight=1)
+        self.main_frame.grid_rowconfigure(0, weight=1)
+        self.main_frame.grid_rowconfigure(1, weight=1)
 
-        # Create buttons with icons
-        for i in range(4):
-            frame = ctk.CTkFrame(self, corner_radius=10)
-            frame.grid(row=i//2, column=i%2, padx=20, pady=20, sticky="nsew")
-            
-            # Load and display icons
-            img = Image.open(icons[i])
-            img = img.resize((200, 180), Image.Resampling.LANCZOS)  # Resize image with high-quality downsampling
-            photo = ImageTk.PhotoImage(img)
+        # Initialize buttons
+        self.create_button("assetes/images/text.png", "Text", self.on_text, 0, 0)
+        self.create_button("assetes/images/pic.png", "Image", self.on_image, 0, 1)
+        self.create_button("assetes/images/sound.png", "Sound", self.on_sound, 1, 0)
+        self.create_button("assetes/images/movie.png", "Video", self.on_video, 1, 1)
 
-            icon_label = ctk.CTkLabel(frame, image=photo, text="")
-            icon_label.image = photo  # Keep a reference 
-            icon_label.pack( pady=(20, 5))
+    def create_button(self, icon_path, text, action, row, col):
+        frame = ctk.CTkFrame(self.main_frame, corner_radius=10)
+        frame.grid(row=row, column=col, padx=20, pady=20, sticky="nsew")
 
-            button = ctk.CTkButton(frame, text=button_texts[i], command=actions[i])
-            button.pack(pady=(5, 20))
+        img = Image.open(icon_path).resize((200, 180), Image.Resampling.LANCZOS)
+        photo = ImageTk.PhotoImage(img)
+        icon_label = ctk.CTkLabel(frame, image=photo, text="")
+        icon_label.image = photo
+        icon_label.pack(pady=(20, 5))
+
+        button = ctk.CTkButton(frame, text=text, command=lambda: self.change_content(action))
+        button.pack(pady=(5, 20))
+
+    def change_content(self, action):
+    # Clear all widgets from the main_frame using destroy to remove all geometry management
+        for widget in self.main_frame.winfo_children():
+            widget.destroy()
+
+    # Execute the action to update the content
+        action()
+
+    def create_initial_buttons(self):
+    # Clear existing content properly before creating new buttons
+        for widget in self.main_frame.winfo_children():
+            widget.destroy()  # Ensuring all widgets are removed
+
+    # Recreate the initial buttons
+        self.create_button("assetes/images/text.png", "Text", self.on_text, 0, 0)
+        self.create_button("assetes/images/pic.png", "Image", self.on_image, 0, 1)
+        self.create_button("assetes/images/sound.png", "Sound", self.on_sound, 1, 0)
+        self.create_button("assetes/images/movie.png", "Video", self.on_video, 1, 1)
+
+    def add_back_button(self):
+    # Position the back button at the bottom or another specific place
+        back_button = ctk.CTkButton(self.main_frame, text="Back", command=self.create_initial_buttons)
+        back_button.pack(pady=1, padx=5)  # Using pack here as well to place the button below the label
+
 
     def on_text(self):
-        print("Text multimedia selected")
+    # Clear all widgets from the main_frame using destroy to remove all geometry management
+        for widget in self.main_frame.winfo_children():
+            widget.destroy()
+
+        # New Content from here on 
+        label = ctk.CTkLabel(self.main_frame, text="Text multimedia content here")
+        label.pack(pady=10, padx=20)  # Using pack for simplicity in single widget scenarios
+
+        self.add_back_button()
+
 
     def on_image(self):
-        print("Image multimedia selected")
+    # Clear all widgets from the main_frame using destroy to remove all geometry management
+        for widget in self.main_frame.winfo_children():
+            widget.destroy()
+
+        # New Content from here on 
+        label = ctk.CTkLabel(self.main_frame, text="Picture multimedia content here")
+        label.pack(pady=20, padx=20)  # Using pack for simplicity in single widget scenarios
+
+        self.add_back_button()
 
     def on_sound(self):
-        print("Sound multimedia selected")
+    # Clear all widgets from the main_frame using destroy to remove all geometry management
+        for widget in self.main_frame.winfo_children():
+            widget.destroy()
+
+        # New Content from here on 
+        label = ctk.CTkLabel(self.main_frame, text="Sound multimedia content here")
+        label.pack(pady=20, padx=20)  # Using pack for simplicity in single widget scenarios
+
+        self.add_back_button()
 
     def on_video(self):
-        print("Video multimedia selected")
+    # Clear all widgets from the main_frame using destroy to remove all geometry management
+        for widget in self.main_frame.winfo_children():
+            widget.destroy()
+
+        # New Content from here on 
+        label = ctk.CTkLabel(self.main_frame, text="Movie multimedia content here")
+        label.pack(pady=20, padx=20)  # Using pack for simplicity in single widget scenarios
+
+        self.add_back_button()
 
 if __name__ == "__main__":
     app = App()
