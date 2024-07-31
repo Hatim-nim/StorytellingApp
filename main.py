@@ -2,8 +2,8 @@ import customtkinter as ctk
 import os
 from PIL import Image, ImageTk
 
-ctk.set_appearance_mode("light")  # "dark" is also available
-ctk.set_default_color_theme("blue")  # You can change the theme color
+ctk.set_appearance_mode("dark")  # Set the UI mode
+ctk.set_default_color_theme("blue")  # Set the color theme
 
 class App(ctk.CTk):
     def __init__(self):
@@ -11,22 +11,23 @@ class App(ctk.CTk):
         self.title("Storytelling App")
         self.geometry("800x600")
 
-        # Layout configuration
+        # Configure the grid to distribute space equally
+        # Ensure both columns have equal weight
+        self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
+        
+        # Ensure both rows have equal weight
+        self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
 
         # Icons for the buttons
         icons = [
-    "assets/images/text.jpg",
-    "assets/images/picture_gallery.jpg",
-    "assets/images/sound.png",
-    "assets/images/movie.jpg"
-        ]   
-        for icon in icons:
-            if not os.path.exists(icon):
-                print(f"File not found: {icon}")
-            else:
-                print(f"File exists: {icon}")        
+            "assetes/images/text.png",
+            "assetes/images/pic.png",
+            "assetes/images/sound.png",
+            "assetes/images/movie.png"
+        ]
+        
         button_texts = ["Text", "Image", "Sound", "Video"]
         actions = [self.on_text, self.on_image, self.on_sound, self.on_video]
 
@@ -35,14 +36,14 @@ class App(ctk.CTk):
             frame = ctk.CTkFrame(self, corner_radius=10)
             frame.grid(row=i//2, column=i%2, padx=20, pady=20, sticky="nsew")
             
-            # Load icon
+            # Load and display icons
             img = Image.open(icons[i])
-            img = img.resize((50, 50), Image.ANTIALIAS)  # Resize the image
+            img = img.resize((200, 180), Image.Resampling.LANCZOS)  # Resize image with high-quality downsampling
             photo = ImageTk.PhotoImage(img)
 
-            icon_label = ctk.CTkLabel(frame, image=photo)
-            icon_label.image = photo  # keep a reference!
-            icon_label.pack(pady=(20, 5))
+            icon_label = ctk.CTkLabel(frame, image=photo, text="")
+            icon_label.image = photo  # Keep a reference 
+            icon_label.pack( pady=(20, 5))
 
             button = ctk.CTkButton(frame, text=button_texts[i], command=actions[i])
             button.pack(pady=(5, 20))
