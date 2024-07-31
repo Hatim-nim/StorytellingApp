@@ -1,3 +1,4 @@
+import time
 from langchain_ollama import OllamaLLM
 from langchain_core.prompts import ChatPromptTemplate
 
@@ -23,10 +24,15 @@ def handle_conversation():
         user_input = input("You: ")
         if user_input.lower()== "exit":
             break
-
+        start_time = time.time()  # Start the timer
         result=chain.invoke({"context": context, "question": user_input})
-        print("Bot: ", result)
-        context+= f"\nUser: {user_input}\nAI: {result}"
+        end_time = time.time()  # End the timer
+
+        elapsed_time = end_time - start_time  # Calculate elapsed time
+        print(f"Bot: {result}")
+        print(f"Time taken: {elapsed_time:.2f} seconds")  # Display time taken
+
+        context += f"\nUser: {user_input}\nAI: {result}"
 
 if __name__== "__main__":
     handle_conversation()
