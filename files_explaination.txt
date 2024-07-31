@@ -1,0 +1,17 @@
+Explanation of Components
+
+    main.py: This file will serve as the entry point of your application. It will initialize the main window and bring together all components.
+
+    config.py: Stores constants like paths to the assets folder, window sizes, or any other configuration settings that you want to keep separate from the main logic.
+
+    story_manager.py: Responsible for handling the logic of story progression, loading story contents, and managing the state of the current story.
+
+    assets/: A directory to store all multimedia files neatly organized into subdirectories for images, sounds, and videos.
+
+    multimedia.py: This file will use jes4py to handle all operations related to multimedia like playing audio, displaying images, and video playback.
+
+    ui_components.py: Contains all the UI components that are customized using CustomTkinter, such as buttons, labels, and the layout of these components.
+
+    chatbot.py: Manages the integration of the Ollama chatbot, handling the interactions between the user and the bot.
+
+    utils.py: Includes utility functions that might be used across different parts of the app, such as logging, error handling, or any other helper functions.
